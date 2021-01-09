@@ -3,7 +3,7 @@ from beans.session import Session
 from beans.user import User
 from main import cache
 from utils import default_if_blank, is_not_blank
-from os import path, mkdir
+from os import path, mkdir, chdir
 from datetime import date 
 from constants import *
 import uuid
@@ -39,6 +39,8 @@ def get_journal_entry(user: User):
 
 # Convert the message journal entry into a Markdown file by user and session_id
 def add_to_journal(user: User, user_input):
+    # Changes data file to inside docs for access to website 
+    chdir("docs")
 
     if not path.exists("data"):
         mkdir("data")
@@ -51,11 +53,12 @@ def add_to_journal(user: User, user_input):
     new_file_name = user_folder + '/' + str(date.today()) + ".md"
 
     try:
-        f = open(new_file_name, 'x')
-        f.write(user_input)
+        f = open(new_file_name, 'x') # Doesn't exist
+        f.write("## " + str(date.today()))
+        f.write(user_input + "<br>")
     except: 
         f = open(new_file_name, 'a')
-        f.write("\n" + user_input)
+        f.write("\n" + user_input + "<br>")
 
     f.close()
 
