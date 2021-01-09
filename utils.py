@@ -19,6 +19,23 @@ def get_user_from_request(req_body):
     else:
         return ''
 
+# Extracts user id from Telegram request
+def get_user_from_callback(req_body):
+    if 'callback_query' in req_body:
+        req_from = req_body.get('callback_query', {}).get('from', {})
+        return User(req_from.get('id', ''), __get_name_from_req(req_from), __get_handle_from_req(req_from))
+    else:
+        return ''
+
+# Extracts user id from Telegram request
+def get_callback_from_request(req_body):
+    print(req_body)
+    if 'callback_query' in req_body:
+        query = req_body.get('callback_query', {})
+        print(query)
+        return 
+    else:
+        return ''
 
 # Extracts user's name from Telegram request
 def __get_name_from_req(req_from):
@@ -42,6 +59,7 @@ def __get_handle_from_req(req_from):
 
 # Extracts user's input (text or button click) from Telegram request
 def get_user_input_from_request(req_body):
+    print(req_body)
     if 'message' in req_body:
         return req_body.get('message', {}).get('text', '')
     else:
@@ -61,14 +79,11 @@ def get_user_command_from_request(req_body):
 def get_command_arguments_from_request(req_body):
     if 'message' in req_body and 'entities' in req_body[ 'message' ]:
         text = req_body.get( 'message' ).get( 'text' )
-        arguments = text.split(" ", 1)[1];
         return set(map( lambda entity: text[entity[ 'offset' ] + 1 : entity[ 'offset' ] + entity[ 'length' ]],
             filter( lambda entity: entity[ 'type' ] == 'bot_command' ,
                 req_body[ 'message' ][ 'entities' ])))
     else:
         return {}
-
-
 
 # Checks where one or more string params provided are None or blank
 def is_not_blank(*string):
