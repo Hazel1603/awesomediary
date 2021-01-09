@@ -45,17 +45,25 @@ def add_to_journal(user: User, user_input):
 
     if not path.exists(user_folder):
         os.mkdir(user_folder)
-    
+        
     new_file_name = user_folder + '/' + str(date.today()) + ".md"
-
     try:
-        f = open(new_file_name, 'x')
-        f.write(user_input)
+        f1 = open(new_file_name, 'x')
+        f1.write(user_input+ "<br>")
     except:
-        f = open(new_file_name, 'a')
-        f.write("\n" + user_input)
+        f1 = open(new_file_name, 'a')
+        f1.write("\n" + user_input+ "<br>")
 
-    f.close()
+    overall_file_name = user_folder + '/' + "summary.md"
+    try: 
+        f2 = open(overall_file_name, 'x')
+        f2.write(user_input + "<br>")
+    except: 
+        f2 = open(overall_file_name, '1')
+        f2.write(user_input+ "<br>")
+    
+    f1.close()
+    f2.close()
 
 def __session_key(user: User):
     return "session_{}".format(default_if_blank(user.id, ''))

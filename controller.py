@@ -49,6 +49,8 @@ def __process_request(user: User, session: Session, user_input, commands):
 def __process_telegram_commands(user: User, session: Session, commands, user_input):
     
     chosen_command = commands.pop()
+
+    #result[0] = markdown, result[1] = Inline, result[2] = URL 
     result = __process_individual_telegram_command_with_parameter(chosen_command, user_input, user)
     print(result)
     if result[1]: 
