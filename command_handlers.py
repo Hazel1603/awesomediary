@@ -3,10 +3,12 @@ from api.telegram_api import send_timed_message
 from cache import get_journal_entry, add_to_journal
 import random
 import time
+from datetime import date
 
 # temporary variable that stores questions asked
 asked_qns = []
 
+from _datetime import date
 # Returns an error message stating that command is invalid
 def handle_invalid_command(user_input, user, **kwargs):
     return DEFAULT_ERROR_MESSAGE
@@ -45,6 +47,11 @@ def __end(user_input, user):
 
 def __today(user_input, user):
     return get_journal_entry(user)
+
+def __getJournal(user_input, user):
+    response = "Click on the link below for your journal entry!"
+    url = "https://hazel1603.github.io/awesomediary/data/{}/{}.html".format(user.handle, str(date.today()))
+    return [response, url]
 
 def is_hh_mm_time(time_string):
     try:
@@ -103,5 +110,6 @@ COMMAND_HANDLERS = {
     'next': lambda user_input, user: __next(user_input, user), 
     'end': lambda user_input, user: __end(user_input, user),
     'ask': lambda user_input, user: __set_reminder(user_input, user),
-    'today': lambda user_input, user: __today(user_input, user)
+    'today': lambda user_input, user: __today(user_input, user),
+    'getJournal': lambda user_input, user: __getJournal(user_input, user)
 }

@@ -1,4 +1,6 @@
 import telebot
+from telebot import types 
+from types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from beans.user import User
 from constants import TELEGRAM_API_TOKEN
@@ -16,6 +18,17 @@ def send_message(user: User, state, session_id, response):
           .format(response, user.id, session_id, state))
 
     return bot.send_message(user.id, response, parse_mode='Markdown')
+
+def send_message_with_link(user: User, state, session_id, response, url):
+    print("Sending response '{}' with link {} for user {} session {} state '{}'"
+        .format(response, url, user.id, session_id, state))
+    
+    keyBoard = [
+        [InlineKeyboardButton("Open in Browser", url= url)]
+    ]
+
+    markup = InlineKeyboardMarkup(keyBoard)
+    return bot.send_message(user.id, response, reply_markup=markup)
 
 def schedule_checker():
     while True:

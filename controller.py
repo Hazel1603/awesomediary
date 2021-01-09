@@ -1,7 +1,7 @@
 from pprint import pprint
 from flask import request
                                                                                                               
-from api.telegram_api import send_message
+from api.telegram_api import send_message, send_message_with_link
 from beans.session import Session
 from beans.user import User
 from cache import add_to_journal, get_current_session
@@ -47,7 +47,11 @@ def __process_request(user: User, session: Session, user_input, commands):
 def __process_telegram_commands(user: User, session: Session, commands, user_input):
     chosen_command = commands.pop()
     result = __process_individual_telegram_command_with_parameter(chosen_command, user_input, user)
-    send_message(user, ", " .join(commands), session.id, result)
+
+    if isinstance(result, list):
+        send_message_with_link(user, ", ".join(commands), session.id, result[0], result[1])
+    else:
+        send_message(user, ", " .join(commands), session.id, result)
 
 def __process_individual_telegram_command (command) :
     if is_not_blank(command):
