@@ -53,9 +53,12 @@ def add_to_journal(user: User, user_input):
     new_file_name = user_folder + '/' + str(date.today()) + ".md"
 
     try:
-        f = open(new_file_name, 'x') # Doesn't exist
-        f.write("## " + str(date.today()))
-        f.write(user_input + "<br>")
+        # f = open(new_file_name, 'x') # Doesn't exist
+        # f.write("## " + str(date.today()))
+        # f.write(user_input + "<br>")
+
+        f = open(new_file_name, 'x')
+        f.write(user_input)
     except: 
         f = open(new_file_name, 'a')
         f.write("\n" + user_input + "<br>")
